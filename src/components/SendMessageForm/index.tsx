@@ -4,6 +4,7 @@ import ButtonUnstyled from '@mui/core/ButtonUnstyled';
 import InputBase from '@mui/material/InputBase';
 import Box from '@mui/material/Box';
 import SendIcon from '@mui/icons-material/Send';
+import { Typography } from '@mui/material';
 
 interface Props {
     onSubmit?: (message: string) => void;
@@ -14,13 +15,20 @@ interface Props {
  */
 const SendMessageForm: React.FC<Props> = ({ onSubmit }: Props) => {
     const [message, setMessage] = useState('');
+    const [error, setError] = useState(null);
 
     const handleSubmit = (event: React.FormEvent) => {
         // Pour éviter le rechargement de la page
         event.preventDefault();
-        // Puis on transmet au parent si la fonction existe
-        onSubmit && onSubmit(message);
-        setMessage('');
+        try {
+            // Puis on transmet au parent si la fonction existe
+            onSubmit && onSubmit(message);
+            setMessage('');
+            setError(null);
+        }
+        catch (e) {
+            setError(e);
+        }
     }
 
     return (
@@ -29,6 +37,7 @@ const SendMessageForm: React.FC<Props> = ({ onSubmit }: Props) => {
                 placeholder="Votre message ici ..."
                 value={message}
                 onChange={(event) => setMessage(event.target.value)}
+                error={error !== null}
             />
             <ButtonUnstyled type="submit">
                 <SendIcon />

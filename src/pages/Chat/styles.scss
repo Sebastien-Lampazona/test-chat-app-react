@@ -3,20 +3,20 @@
 
 .chat.MuiPaper-root {
     margin: 50px auto;
-    height: calc(100vh - 100px);
     max-width: 600px;
     width: 100vw;
     background-color: #eeeeee;
     display: flex;
-    overflow: hidden;
     flex-direction: column;
     border-radius: 5px;
+    height: 80vh;
 }
 
 .messages-list {
     display: flex;
-    flex: 1;
     flex-direction: column;
+    flex: 1;
+    overflow: hidden;
     &__header {
         background-color: color.change(vars.$primary-color, $blackness: 30%);
         padding: 10px;
@@ -24,9 +24,46 @@
     }
     &__content {
         padding: 20px;
-        overflow-x: none;
-        overflow-y: scroll;
+        overflow: auto;
         flex: 1;
+        flex-direction: column;
+        display: flex;
+    }
+    .message {
+        display: flex;
+        max-width: 75%;
+        &__container {
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        &__content {
+            background-color: vars.$secondary-color;
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            font-weight: lighter;
+            width: fit-content;
+        }
+        &__date {
+            color: #a8a8a8;
+            font-size: 0.8em;
+        }
+        &__pseudo {
+            font-weight: bold;
+        }
+
+        &--is-mine {
+            flex-direction: row-reverse;
+            align-self: flex-end;
+            text-align: right;
+            .message__content {
+                background-color: vars.$primary-color;
+            }
+            .message__container {
+                align-items: flex-end;
+            }
+        }
     }
 }
 
@@ -36,6 +73,10 @@
         padding: 10px 20px;
         background-color: #fcfcfc;
         flex: 1;
+        &.Mui-error {
+            background-color: #ff9595;
+            color: white;
+        }
     }
     button {
         border: 0;
