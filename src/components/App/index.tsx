@@ -3,9 +3,8 @@ import Button from '@mui/material/Button';
 import './styles.css';
 
 // == Composant
-const App = () => (
-  <div className="app">
-    <h1>Composant : App</h1>
+const App:React.FC = () => (
+  <div className="main-component">
     <Button variant="contained">Hello World</Button>
   </div>
 );

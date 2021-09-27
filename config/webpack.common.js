@@ -13,7 +13,7 @@ module.exports = {
     // SCSS
     paths.src + '/styles/index.scss',
     // JS
-    paths.src + '/index.js',
+    paths.src + '/index.tsx',
   ],
   output: {
     path: paths.build,
@@ -25,6 +25,7 @@ module.exports = {
       src: paths.src,
       app: paths.src,
     },
+    extensions: ['.tsx', '.ts', '.js'],
   },
   plugins: [
     new webpack.DefinePlugin( {
@@ -60,6 +61,12 @@ module.exports = {
             },
           },
         ],
+      },
+      //TS
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
       },
       // Images
       {
