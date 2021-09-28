@@ -29,6 +29,12 @@
         flex-direction: column;
         display: flex;
     }
+    &__loading {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
     .message {
         display: flex;
         max-width: 75%;

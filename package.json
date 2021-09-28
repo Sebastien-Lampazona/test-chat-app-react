@@ -57,6 +57,7 @@
     "@mui/icons-material": "^5.0.1",
     "@mui/material": "^5.0.1",
     "@mui/styled-engine-sc": "^5.0.0",
+    "axios": "^0.21.4",
     "classnames": "^2.3.1",
     "dayjs": "^1.10.7",
     "prop-types": "^15.7.2",

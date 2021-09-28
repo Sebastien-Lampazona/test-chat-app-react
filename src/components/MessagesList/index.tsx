@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useEffect, useState, useRef } from 'react'
 import Box from '@mui/material/Box';
-import { Typography } from '@mui/material';
+import { CircularProgress, Typography } from '@mui/material';
 import MessageItem, { AuthorT } from './MessageItem';
 
 export type MessageT = {
@@ -12,14 +12,17 @@ export type MessageT = {
 
 interface Props {
     pseudo: string;
-    messages?: Array<MessageT>
+    messages?: Array<MessageT>;
+    // fetchMessagesPage?: () => Promise<void | Array<MessageT>>;
+    fetchMessagesPage?: () => void;
+    loading?: boolean;
 }
 
 
 /**
  * Permet d'afficher une liste de messages
  */
-const MessagesList: React.FC<Props> = ({ pseudo, messages }: Props) => {
+const MessagesList: React.FC<Props> = ({ pseudo, messages, fetchMessagesPage, loading }: Props) => {
     const containerRef = useRef(null);
     const [stickToBottom, setStickToBottom] = useState(true);
 
@@ -27,12 +30,17 @@ const MessagesList: React.FC<Props> = ({ pseudo, messages }: Props) => {
     useEffect(() => {
         const onDivScroll = () => {
             setStickToBottom(containerRef.current.scrollTop + containerRef.current.clientHeight === containerRef.current.scrollHeight);
+            if (containerRef.current.scrollTop === 0) {
+                if (fetchMessagesPage) {
+                    fetchMessagesPage();
+                }
+            }
         };
         containerRef.current.addEventListener('scroll', onDivScroll);
         return () => {
             containerRef.current.removeEventListener('scroll', onDivScroll);
         }
-    }, []);
+    }, [fetchMessagesPage]);
 
     // Effet permettant de scroll vers le bas en cas de nouveau message ( si on est déjà en bas sinon c'est relou )
     useEffect(() => {
@@ -49,6 +57,11 @@ const MessagesList: React.FC<Props> = ({ pseudo, messages }: Props) => {
                 <Typography variant="subtitle2" component="h1">Connecté en tant {pseudo}</Typography>
             </Box>
             <Box className="messages-list__content" ref={containerRef}>
+                {loading && (
+                    <Box className="messages-list__loading">
+                        <CircularProgress /> Chargement en cours
+                    </Box>
+                )}
                 {
                     messages && messages.length === 0
                         ? <Typography style={{ textAlign: 'center' }} variant="subtitle2">Aucun message à afficher</Typography>
@@ -67,6 +80,7 @@ const MessagesList: React.FC<Props> = ({ pseudo, messages }: Props) => {
 
 MessagesList.defaultProps = {
     messages: [],
+    loading: false,
 }
 
-export default MessagesList;
+export default React.memo(MessagesList);
