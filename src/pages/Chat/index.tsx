@@ -4,10 +4,12 @@ import { Redirect } from 'react-router-dom';
 import Paper from '@mui/material/Paper';
 import messagesData from 'src/assets/messages.json';
 
-// Ajout du CSS
-import './styles.scss';
+import api from 'src/api';
 import MessagesList, { MessageT } from 'src/components/MessagesList';
 import SendMessageForm from 'src/components/SendMessageForm';
+
+// Ajout du CSS
+import './styles.scss';
 
 interface Props {
     pseudo: string;
@@ -42,6 +44,7 @@ const Chat: React.FC<Props> = ({ pseudo }: Props) => {
 
     const fetchMessagesPage = useCallback(() => {
         if (!loading && !fetchedAllMessages) {
+            console.log('fetchMessagesPage');
             setLoading(true);
             return (new Promise((resolve, reject) => {
                 const pageToFetch = page + 1;
@@ -58,9 +61,9 @@ const Chat: React.FC<Props> = ({ pseudo }: Props) => {
                 setLoading(false);
             })
         }
-    }, [loading, page]);
+    }, [loading, page, messages]);
 
-    const sendNewMessage = useCallback((message) => {
+    const sendNewMessage = useCallback((userPseudo: string, fullname: string, iconUrl: string, message: string) => {
         if (!message.trim()) {
             throw new Error('Impossible d\'envoyer un message vide')
         }
@@ -68,9 +71,9 @@ const Chat: React.FC<Props> = ({ pseudo }: Props) => {
             ...messages,
             {
                 author: {
-                    pseudo,
-                    fullName: pseudo,
-                    iconUrl: "https://cached.imagescaler.hbpl.co.uk/resize/scaleWidth/1130/cached.offlinehbpl.hbpl.co.uk/news/OMC/Trumpinflames820-2017011311472757.jpg"
+                    pseudo: userPseudo,
+                    fullName: fullname,
+                    iconUrl: iconUrl
                 },
                 date: Date.now(),
                 message,
@@ -78,7 +81,32 @@ const Chat: React.FC<Props> = ({ pseudo }: Props) => {
         ])
     }, [messages]);
 
+    const handleOnSubmitSendMessageForm = useCallback((message: string) => {
+        return sendNewMessage(
+            pseudo,
+            pseudo,
+            "https://cached.imagescaler.hbpl.co.uk/resize/scaleWidth/1130/cached.offlinehbpl.hbpl.co.uk/news/OMC/Trumpinflames820-2017011311472757.jpg",
+            message,
+        )
+    }, [pseudo, messages]);
+
     const sortedMessages = useMemo(() => sortMessages(messages), [messages]);
+
+    useEffect(() => {
+        const randomAddMessageInterval = setInterval(() => {
+            // Récupération d'un message aléatoire pour le fun !
+            const citation = messagesData[Math.floor(Math.random() * (messagesData.length - 1))];
+            return sendNewMessage(
+                citation.author.pseudo,
+                citation.author.fullName,
+                citation.author.iconUrl,
+                citation.message
+            );
+        }, 3000);
+        return () => {
+            clearInterval(randomAddMessageInterval);
+        }
+    }, [messages]);
 
     return (
         <Paper className="chat" elevation={3}>
@@ -88,7 +116,7 @@ const Chat: React.FC<Props> = ({ pseudo }: Props) => {
                 fetchMessagesPage={fetchMessagesPage}
                 loading={loading}
             />
-            <SendMessageForm onSubmit={sendNewMessage} />
+            <SendMessageForm onSubmit={handleOnSubmitSendMessageForm} />
         </Paper>
     );
 };

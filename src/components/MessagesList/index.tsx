@@ -25,12 +25,26 @@ interface Props {
 const MessagesList: React.FC<Props> = ({ pseudo, messages, fetchMessagesPage, loading }: Props) => {
     const containerRef = useRef(null);
     const [stickToBottom, setStickToBottom] = useState(true);
+    const [stickedFirstTime, setStickedFirstTime] = useState(false);
+
+    // Effet permettant de scroll vers le bas en cas de nouveau message ( si on est déjà en bas sinon c'est relou )
+    useEffect(() => {
+        if (stickToBottom) {
+            containerRef.current.scrollTo({
+                top: containerRef.current.scrollHeight,
+                behavior: 'smooth'
+            });
+            setStickToBottom(true);
+            setStickedFirstTime(true);
+        }
+    }, [messages, stickToBottom]);
+
 
     // Effet permettant de savoir si on est en free scroll ou pas
     useEffect(() => {
         const onDivScroll = () => {
             setStickToBottom(containerRef.current.scrollTop + containerRef.current.clientHeight === containerRef.current.scrollHeight);
-            if (containerRef.current.scrollTop === 0) {
+            if (containerRef.current.scrollTop <= 20 && stickedFirstTime) {
                 if (fetchMessagesPage) {
                     fetchMessagesPage();
                 }
@@ -42,13 +56,6 @@ const MessagesList: React.FC<Props> = ({ pseudo, messages, fetchMessagesPage, lo
         }
     }, [fetchMessagesPage]);
 
-    // Effet permettant de scroll vers le bas en cas de nouveau message ( si on est déjà en bas sinon c'est relou )
-    useEffect(() => {
-        if (stickToBottom) {
-            containerRef.current.scrollTop = containerRef.current.scrollHeight;
-            setStickToBottom(true);
-        }
-    }, [messages, stickToBottom]);
 
 
     return (
