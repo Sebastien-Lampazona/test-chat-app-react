@@ -16,7 +16,6 @@ module.exports = merge(common, {
     }),
     // Recharge uniquement ce qu'il y a besoin
     new webpack.HotModuleReplacementPlugin(),
-    
   ],
   module: {
     rules: [
@@ -57,7 +56,6 @@ module.exports = merge(common, {
     },
     devMiddleware: {
       stats: 'minimal',
-
     },
     static: {
       directory: paths.build,

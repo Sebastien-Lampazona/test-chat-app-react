@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { Box } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
@@ -8,29 +9,22 @@ import LogInForm from 'src/components/LogInForm';
 import VerifiedUserOutlined from '@mui/icons-material/VerifiedUserOutlined';
 import Container from '@mui/material/Container';
 
-interface Props {
-    onFormSuccess: (pseudo:string) => void;
-}
+import { savePseudo } from 'src/actions/settings';
 
-const Login: React.FC<Props> = ({onFormSuccess}:Props) => {
+
+const Login: React.FC = () => {
     let history = useHistory();
-
+    const dispatch = useDispatch()
     const handleSubmitForm = (pseudo: string) => {
-        // On vérifie le pseudo
-        if (pseudo.trim() === '') {
-            throw new Error('Euh ... Y\'a pas de pseudo là !')
-        }
-
         // Si le pseudo est bien là, alors on le remonte
-        onFormSuccess(pseudo);
-
+        dispatch(savePseudo(pseudo));
         // Puis on va vers le tchat
         history.push("/chat");
     };
 
     return (
         <Container component="main" maxWidth="xs">
-            
+
             <Paper variant="outlined" sx={{ mb: { xs: 5, md: 6 }, mt: '20vh', p: { xs: 2, md: 3 } }}>
                 <Box
                     sx={{

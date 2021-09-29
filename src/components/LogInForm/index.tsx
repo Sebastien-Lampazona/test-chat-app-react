@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { useState } from 'react';
+import { connect, ConnectedProps } from 'react-redux'
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
@@ -7,26 +8,42 @@ import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 
-interface Props {
-    onSubmit: (pseudo:string) => void;
+interface SettingsProps {
+    pseudo: string,
 }
 
-const LogInForm: React.FC<Props> = ({ onSubmit }: Props) => {
+interface StateProps {
+    settings: SettingsProps
+}
+
+interface DispatchProps {}
+
+interface OwnProps {
+    onSubmit: (pseudo: string) => void;
+}
+
+type Props = SettingsProps & DispatchProps & OwnProps
+
+const mapState = (state: StateProps): SettingsProps => ({
+    pseudo: state.settings.pseudo,
+})
+
+const mapDispatch = {}
+
+export const LogInForm: React.FC<Props> = ({ pseudo, onSubmit }: Props) => {
     const [error, setError] = useState(null);
-    const [pseudo, setPseudo] = useState(localStorage.getItem('pseudo') || '');
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         try {
+            const data = new FormData(event.currentTarget);
+            const pseudoValue:string = data.get('pseudo').toString();
             // On vérifie le pseudo
-            if (pseudo.trim() === '') {
+            if (pseudoValue.trim() === '') {
                 throw new Error('Euh ... Y\'a pas de pseudo là !')
             }
-
-            // Si le pseudo est bien là, alors on l'ajoute en localstorage
-            localStorage.setItem('pseudo', pseudo);
             // Puis on va vers le tchat
-            onSubmit(pseudo);
+            onSubmit(pseudoValue);
         }
         catch (e) {
             setError(e.message);
@@ -54,9 +71,8 @@ const LogInForm: React.FC<Props> = ({ onSubmit }: Props) => {
                         label="Pseudo"
                         type="text"
                         id="pseudo"
+                        defaultValue={pseudo}
                         autoComplete="nickname"
-                        value={pseudo}
-                        onChange={(event) => setPseudo(event.target.value)}
                     />
                 </Grid>
             </Grid>
@@ -72,4 +88,7 @@ const LogInForm: React.FC<Props> = ({ onSubmit }: Props) => {
     );
 };
 
-export default LogInForm;
+export default connect<SettingsProps, DispatchProps, OwnProps>(
+    mapState,
+    mapDispatch
+)(LogInForm)
