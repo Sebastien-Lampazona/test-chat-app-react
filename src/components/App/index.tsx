@@ -1,31 +1,21 @@
 import { useState, useCallback } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
-import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 // Import locaux
+import Copyright from './Copyright';
 import LogIn from 'src/pages/Login';
 import Chat from 'src/pages/Chat';
 
-function Copyright(props: any) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="http://adopteundev.fr">
-        Adopteundev.fr
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
 const theme = createTheme();
 
-export default function SignUp() {
+export default function App() {
+  // Initialisation du pseudo
   const [pseudo, setPseudo] = useState(localStorage.getItem('pseudo'))
+  // Fonction permettant de mettre à jour le state du pseudo et de le persister dans le localstorage
+  // au cas ou on revient sur la page pour pas avoir à le resaisir
   const persistPseudo = useCallback((validatedPseudo) => {
     setPseudo(validatedPseudo);
     localStorage.setItem('pseudo', validatedPseudo);

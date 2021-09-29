@@ -17,6 +17,7 @@ const SendMessageForm: React.FC<Props> = ({ onSubmit }: Props) => {
     const [message, setMessage] = useState('');
     const [error, setError] = useState(null);
 
+    // A la soumission du formulaire d'envoie de message
     const handleSubmit = (event: React.FormEvent) => {
         // Pour éviter le rechargement de la page
         event.preventDefault();
