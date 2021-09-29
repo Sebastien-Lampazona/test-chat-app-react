@@ -44,7 +44,6 @@ const Chat: React.FC<Props> = ({ pseudo }: Props) => {
 
     const fetchMessagesPage = useCallback(() => {
         if (!loading && !fetchedAllMessages) {
-            console.log('fetchMessagesPage');
             setLoading(true);
             return (new Promise((resolve, reject) => {
                 const pageToFetch = page + 1;

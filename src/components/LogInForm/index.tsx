@@ -13,7 +13,7 @@ interface Props {
 
 const LogInForm: React.FC<Props> = ({ onSubmit }: Props) => {
     const [error, setError] = useState(null);
-    const [pseudo, setPseudo] = useState(localStorage.getItem('pseudo'));
+    const [pseudo, setPseudo] = useState(localStorage.getItem('pseudo') || '');
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();

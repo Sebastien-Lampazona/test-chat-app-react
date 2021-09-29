@@ -30,13 +30,8 @@ const Login: React.FC<Props> = ({onFormSuccess}:Props) => {
 
     return (
         <Container component="main" maxWidth="xs">
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 20 }}>
-                <Avatar sx={{ width: 125, height: 125 }} src="http://adopteundev.fr/wp-content/uploads/2020/01/matronche-scaled.jpg" />
-                <Typography component="div" variant="subtitle2">
-                    Oué c'est moi !
-                </Typography>
-            </div>
-            <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
+            
+            <Paper variant="outlined" sx={{ mb: { xs: 5, md: 6 }, mt: '20vh', p: { xs: 2, md: 3 } }}>
                 <Box
                     sx={{
                         display: 'flex',
