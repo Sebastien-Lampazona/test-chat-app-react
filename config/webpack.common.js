@@ -3,7 +3,6 @@ const paths = require('./paths');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const dotenv = require('dotenv-flow').config( {
   path: path.join(paths.root)
 });
@@ -39,11 +38,6 @@ module.exports = {
           to: '',
         }
       ],
-    }),
-
-    new HtmlWebpackPlugin({
-      favicon: paths.assets + '/favicon.ico',
-      template: paths.assets + '/index.html',
     }),
   ],
 

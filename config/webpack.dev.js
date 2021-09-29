@@ -1,4 +1,5 @@
 const paths = require('./paths');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
@@ -9,8 +10,13 @@ module.exports = merge(common, {
   mode: 'development',
   devtool: 'inline-source-map',
   plugins: [
+    new HtmlWebpackPlugin({
+      favicon: paths.assets + '/favicon.ico',
+      template: paths.assets + '/index.html',
+    }),
     // Recharge uniquement ce qu'il y a besoin
     new webpack.HotModuleReplacementPlugin(),
+    
   ],
   module: {
     rules: [
