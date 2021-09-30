@@ -2,7 +2,11 @@ import { combineReducers } from 'redux'
 import settings from './settings'
 import tchat from './tchat'
 
-export default combineReducers({
+const rootReducer = combineReducers({
     settings,
     tchat
-})
+});
+
+export type RootState = ReturnType<typeof rootReducer>
+
+export default rootReducer;

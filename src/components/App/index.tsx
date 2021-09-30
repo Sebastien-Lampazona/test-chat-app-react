@@ -22,7 +22,7 @@ export default function App() {
               <LogIn />
             </Route>
             <Route path="/chat" exact >
-              {/* <Chat /> */}
+              <Chat />
             </Route>
           </Switch>
           <Copyright sx={{ mt: 5 }} />

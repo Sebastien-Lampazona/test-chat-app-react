@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import { CircularProgress, Typography } from '@mui/material';
 import classnames from 'classnames';
 import MessageItem, { AuthorT } from './MessageItem';
+import { connect } from 'react-redux';
 
 export type MessageT = {
     author: AuthorT;
@@ -11,19 +12,42 @@ export type MessageT = {
     date: number;
 }
 
-interface Props {
-    pseudo: string;
-    messages?: Array<MessageT>;
-    fetchMessagesPage?: () => Promise<MessageT[]>;
-    // fetchMessagesPage?: () => void;
+interface ChatProps {
+    messages: MessageT[],
+}
+
+interface SettingsProps {
+    pseudo: string,
+}
+
+interface StateProps {
+    tchat: ChatProps,
+    settings: SettingsProps
+}
+
+
+interface DispatchProps {}
+
+interface OwnProps {
+    onTopReach?: () => Promise<MessageT[]>;
+    // onTopReach?: () => void;
     loading?: boolean;
 }
+
+type Props = ChatProps & SettingsProps & DispatchProps & OwnProps
+
+const mapState = (state: StateProps): ChatProps & SettingsProps => ({
+    messages: state.tchat.messages,
+    pseudo: state.settings.pseudo,
+})
+
+const mapDispatch = {}
 
 
 /**
  * Permet d'afficher une liste de messages
  */
-const MessagesList: React.FC<Props> = ({ pseudo, messages, fetchMessagesPage, loading }: Props) => {
+export const MessagesList: React.FC<Props> = React.memo(({ pseudo, messages, onTopReach, loading }: Props) => {
     const containerRef = useRef(null);
     const [stickedToBottom, setStickedToBottom] = useState(true);
     const [stickedFirstTime, setStickedFirstTime] = useState(false);
@@ -69,7 +93,7 @@ const MessagesList: React.FC<Props> = ({ pseudo, messages, fetchMessagesPage, lo
         if (fetchGapRaised) {
             // On enregistre la position d'avant le fetch
             const scrollHeightBeforeFetch = containerRef.current.scrollHeight;
-            fetchMessagesPage().then((messages) => {
+            onTopReach().then((messages) => {
                 if (messages.length) {
                     // Pour venir si y'a eu des résultats se remettre là ou on été afin de pouvoir continuer à scroll vers le haut
                     containerRef.current.scrollTop = containerRef.current.scrollHeight - scrollHeightBeforeFetch;
@@ -77,9 +101,6 @@ const MessagesList: React.FC<Props> = ({ pseudo, messages, fetchMessagesPage, lo
             });
         }
     }, [fetchGapRaised])
-
-
-
 
     return (
         <Box className="messages-list">
@@ -104,11 +125,15 @@ const MessagesList: React.FC<Props> = ({ pseudo, messages, fetchMessagesPage, lo
             </Box>
         </Box>
     );
-};
+});
 
 MessagesList.defaultProps = {
+    // @ts-ignore
     messages: [],
     loading: false,
 }
 
-export default React.memo(MessagesList);
+export default connect<ChatProps & SettingsProps, DispatchProps, OwnProps>(
+    mapState,
+    mapDispatch
+)(MessagesList)

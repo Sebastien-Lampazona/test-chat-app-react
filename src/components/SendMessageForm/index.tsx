@@ -1,19 +1,30 @@
 import * as React from 'react'
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import ButtonUnstyled from '@mui/core/ButtonUnstyled';
 import InputBase from '@mui/material/InputBase';
 import Box from '@mui/material/Box';
 import SendIcon from '@mui/icons-material/Send';
-import { Typography } from '@mui/material';
+import { sendMessage } from 'src/actions/tchat';
+import { connect } from 'react-redux';
 
-interface Props {
-    onSubmit?: (message: string) => void;
+interface DispatchProps { }
+
+interface OwnProps {
+    onSubmit: (message: string) => void;
 }
+
+type Props = DispatchProps & OwnProps
+
+const mapState: null = null;
+
+const mapDispatch = (dispatch: (arg0: any) => any) => ({
+    onSubmit: (message: string) => dispatch(sendMessage(message)),
+});
 
 /**
  * Permet d'afficher un formulaire d'envoie de message
  */
-const SendMessageForm: React.FC<Props> = ({ onSubmit }: Props) => {
+export const SendMessageForm: React.FC<Props> = ({ onSubmit }: Props) => {
     const [message, setMessage] = useState('');
     const [error, setError] = useState(null);
 
@@ -23,11 +34,15 @@ const SendMessageForm: React.FC<Props> = ({ onSubmit }: Props) => {
         event.preventDefault();
         try {
             // Puis on transmet au parent si la fonction existe
-            onSubmit && onSubmit(message);
+            if (!message.trim()) {
+                throw new Error('Impossible d\'envoyer un message vide')
+            }
+            onSubmit(message);
             setMessage('');
             setError(null);
         }
         catch (e) {
+            console.warn(e.message);
             setError(e);
         }
     }
@@ -47,4 +62,7 @@ const SendMessageForm: React.FC<Props> = ({ onSubmit }: Props) => {
     );
 };
 
-export default SendMessageForm;
+export default connect<DispatchProps, OwnProps>(
+    mapState,
+    mapDispatch
+)(SendMessageForm)
