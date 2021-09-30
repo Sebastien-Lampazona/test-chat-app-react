@@ -97,5 +97,50 @@
         },
         "message": "Mais vous êtes une grosse morue!",
         "date": 16317900000064
+    },
+    {
+        "author": {
+            "pseudo": "verinus",
+            "fullName": "Vérinus",
+            "iconUrl": "https://kaamelott.kyane.fr/icons/verinus.jpg"
+        },
+        "message": "Y a un truc, quand même, qu'il faut que vous compreniez bien les gars... Si vous voulez, moi, à la base... J'suis une balance... C'est le postulat de départ, on a devant soi, une balance. Donc une personne, si vous voulez, qu'on n'a pas besoin de cogner puisque elle vient elle-même délivrer l'information, sans que vous ayez même à la demander. Parce que non, pourquoi j'vous dis ça ? Puisque... on est quand même à une heure et demie de marrons dans la gueule là... Et si j'vous dis que je ne sais rien, c'est que je pense qu'effectivement... (Procyon le frappe) Pfff... je n'sais rien...",
+        "date": 1632962046997
+    },
+    {
+        "author": {
+            "pseudo": "loth",
+            "fullName": "Loth",
+            "iconUrl": "https://kaamelott.kyane.fr/icons/loth.jpg"
+        },
+        "message": "(A Galessin : \"Le rapport entre quoi et quoi ?\") Entre Excalibur et le fromage gratiné. Réponse: Aucun. C'est une métaphore moisie tiraillée entre votre stupidité d'ordre général et votre surprenante inaptitude à utiliser les métaphores...",
+        "date": 1632962090140
+    },
+    {
+        "author": {
+            "pseudo": "perceval",
+            "fullName": "Perceval",
+            "iconUrl": "https://kaamelott.kyane.fr/icons/perceval.jpg"
+        },
+        "message": "(À Arthur et Lancelot) Ça sert à rien, un siège, si elle est enceinte, il faut des linges blancs et une bassine d'eau chaude.",
+        "date": 1632962128150
+    },
+    {
+        "author": {
+            "pseudo": "capito",
+            "fullName": "Capito",
+            "iconUrl": "https://kaamelott.kyane.fr/icons/capito.jpg"
+        },
+        "message": "Tu salues plus les généraux ? C'est pourtant largement au-dessus de ton grade merdique.",
+        "date": 1632962153383
+    },
+    {
+        "author": {
+            "pseudo": "lancelot",
+            "fullName": "Lancelot",
+            "iconUrl": "https://kaamelott.kyane.fr/icons/lancelot.jpg"
+        },
+        "message": "(À Guéthenoc) Si votre but c’était de séduire les dames fallait faire chevalier, c’est tout !",
+        "date": 1632962185784
     }
 ]
